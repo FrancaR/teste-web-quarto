@@ -11,10 +11,12 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'PropertyController@index')->name('properties.index');
+Route::get('property-{id}', 'PropertyController@show')->name('properties.show');
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::name('manager.')->prefix('manager')->namespace('Manager')->group(function () {
+    Route::resource('properties', 'PropertyController');
+    Route::post('properties/{id}/photo', 'PhotoController@store')->name('properties.photos');
+});
